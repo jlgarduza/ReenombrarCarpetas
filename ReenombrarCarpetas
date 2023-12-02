@@ -1,0 +1,40 @@
+
+package reenombrarcarpetas;
+
+import java.io.File;
+import java.util.Scanner;
+
+public class ReenombrarCarpetas {
+
+    public static void main(String[] args) {
+        Scanner teclado = new Scanner(System.in);
+        System.out.println("Ingrese la ruta:");
+        String directorioPrincipal = teclado.nextLine(); // Reemplaza con la ruta de tu directorio principal
+        
+        System.out.println("Ingresa nombre nuevo:");
+        String nombreNuevo = teclado.nextLine();
+
+        File directorio = new File(directorioPrincipal);
+        if (directorio.exists() && directorio.isDirectory()) {
+            int contador = 1;
+            File[] subdirectorios = directorio.listFiles(File::isDirectory);
+            
+            if (subdirectorios != null) {
+                for (File subdirectorio : subdirectorios) {
+                    String nuevoNombre = nombreNuevo + "_" + contador; // Nuevo nombre de la carpeta
+                    File nuevoDirectorio = new File(directorio, nuevoNombre);
+
+                    if (subdirectorio.renameTo(nuevoDirectorio)) {
+                        System.out.println("Se ha renombrado '" + subdirectorio.getName() + "' a '" + nuevoNombre + "'");
+                    } else {
+                        System.out.println("No se pudo renombrar '" + subdirectorio.getName() + "'");
+                    }
+                    contador++;
+                }
+            }
+        } else {
+            System.out.println("El directorio no existe o no es válido.");
+        }
+    }
+    
+}
